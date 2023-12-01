@@ -1,9 +1,13 @@
 import axios from 'axios'
+import qs from 'qs'
 
 const http = axios.create({
     // baseURL: import.meta.env.VITE_BASEURL,
     baseURL: 'http://localhost:3000/',
     timeout: 5000,
+    paramsSerializer: function(params) {
+        return qs.stringify(params, {arrayFormat: 'indices'})
+    }
 })
 
 http.interceptors.request.use(

@@ -7,8 +7,8 @@
       <el-main class="wrapped">
         <img src="../../assets/login/undraw_raining_re_4b55.svg" alt="login icon">
         <span class="content">The blog management site of Xie</span>
-        <el-tabs type="border-card">
-          <el-tab-pane label="Login">
+        <el-tabs type="border-card" v-model="tabNow">
+          <el-tab-pane label="Login" name="login">
             <el-form ref="loginFormRef" :model="loginForm" status-icon label-width="80px" class="loginForm">
               <el-form-item label="Username" prop="username">
                 <el-input v-model="loginForm.username" type="text" autocomplete="off" />
@@ -21,7 +21,7 @@
                   style="width: 200%; margin-top: 10px; margin-left: -80px;">login</el-button>
               </el-form-item>
             </el-form></el-tab-pane>
-          <el-tab-pane label="SignIn">
+          <el-tab-pane label="SignIn" name="signIn">
             <el-form ref="signFormRef" :model="signForm" status-icon :rules="registerRules" label-width="80px"
               class="signForm">
               <el-form-item label="Username" prop="username" required>
@@ -57,7 +57,7 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { User } from '@/project1-libcommon'
-import { registerUser, loginUser, getOneUser } from '@/api/user'
+import { registerUser, loginUser } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
@@ -67,6 +67,7 @@ const resetCode = () => codeUrl.value = codeUrl.value + '?' + Math.random()
 
 const router = useRouter()
 
+const tabNow = ref<'login' | 'signIn'>('login')
 const loginFormRef = ref<FormInstance>()
 
 const loginForm = reactive({
@@ -91,15 +92,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       message: "登录成功",
       type: 'success',
     })
-    console.log(data);
-    
-    // const one:User = await getOneUser({keyWord: user.username})
-
-    // const userToken = {
-    //   username: one.username,
-    //   nick_name: one.nick_name,
-    //   role: one.role,
-    // }
     
     localStorage.setItem('token', data.token)
     router.push('/home')
@@ -135,6 +127,7 @@ const registerForm = async (signEl: FormInstance | undefined) => {
         message: res.message,
         type: 'success',
       })
+      tabNow.value = 'login'
       break
     default:
       ElMessage({

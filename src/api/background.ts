@@ -5,8 +5,8 @@ export const postBackground = (data: Background) => http.post('/blog/Background'
 
 export const getBackground = (query: Query) => http.get('/blog/Background', {params: query}).then(res => res.data)
 
-export const getOneBackground = (id: number) => http.get(`/blog/Background/:${id}`).then(res => res.data)
+export const getOneBackground = (id: number) => http.get(`/blog/Background/${id}`).then(res => res.data)
 
-export const patchBackground = (data: Background) => http.patch(`/blog/Background/:${data.id}`, data).then(res => res.data)
+export const patchBackground = (data: Background) => http.patch(`/blog/Background/${data.id}`, data).then(res => res.data)
 
-export const deleteBackground = (id: number) => http.delete(`/blog/Background/:${id}`).then(res => res.data)
+export const deleteBackground = (id: number) => http.delete(`/blog/Background/${id}`).then(res => res.data)
